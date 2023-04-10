@@ -10,7 +10,7 @@ async function create(req: Request, res: Response, next: NextFunction) {
     try {
 
         await moviesServices.create(movie)
-        return res.sendStatus(201);
+        return res.sendStatus(httpStatus.CREATED)
 
     } catch (err) {
         next(err);
@@ -61,9 +61,6 @@ async function tickMovie(req: Request, res: Response, next: NextFunction) {
     }
 
 }
-
-
-
 
 export default {
     create,

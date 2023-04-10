@@ -4,9 +4,17 @@ import httpStatus from "http-status";
 import { ObjectSchema } from "joi";
 
 
-export function validateSchema(schema: ObjectSchema) {
+export function validateSchema<T>(schema: ObjectSchema<T>): ValidationMiddleware {
+  return validate(schema);
+}
+
+
+function validate(schema: ObjectSchema) {
   return (req: Request, res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req.body, { abortEarly: false });
+    const { error } = schema.validate(req.body, {
+      abortEarly: false,
+    });
+
     if (!error) {
       next();
     } else {
@@ -15,4 +23,5 @@ export function validateSchema(schema: ObjectSchema) {
   };
 }
 
+type ValidationMiddleware = (req: Request, res: Response, next: NextFunction) => void;
 
